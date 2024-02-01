@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   solveButton.addEventListener('click', solveSudoku);
 
   const sudokuGrid = document.getElementById("sudoku-grid");
-  // Create the sudoku grid and input cells
+  // Cria a grid do Sudoku e células de input
   for (let row = 0; row < gridSize; row++) {
       const newRow = document.createElement("tr");
       for (let col = 0; col < gridSize; col++) {
@@ -24,7 +24,7 @@ async function solveSudoku() {
   const gridSize = 9;
   const sudokuArray = [];
 
-  // Fill the sudokuArray with input values from the grid
+  // Preenceh o sudokuArray com valores da grid
   for (let row = 0; row < gridSize; row++) {
       sudokuArray[row] = [];
       for (let col = 0; col < gridSize; col++) {
@@ -34,7 +34,7 @@ async function solveSudoku() {
       }
   }
 
-  // Identify user-input cells and mark them
+  // Identifica as células colcadas pelo usuário e marca as mesmas
   for (let row = 0; row < gridSize; row++) {
       for (let col = 0; col < gridSize; col++) {
           const cellId = `cell-${row}-${col}`;
@@ -46,18 +46,18 @@ async function solveSudoku() {
       }
   }
 
-  // Solve the sudoku and display the solution
+  // Resolve o sudoku e mostra a solução
   if (solveSudokuHelper(sudokuArray)) {
       for (let row = 0; row < gridSize; row++) {
           for (let col = 0; col < gridSize; col++) {
               const cellId = `cell-${row}-${col}`;
               const cell = document.getElementById(cellId);
 
-              // Fill in solved values and apply animation
+              // Preenche os valores resolvidos e aplica a animação 
               if (!cell.classList.contains("user-input")) {
                   cell.value = sudokuArray[row][col];
                   cell.classList.add("solved");
-                  await sleep(20); // Add a delay for visualization
+                  await sleep(20); // Adiciona um delay para exibição
               }
           }
       }
@@ -76,45 +76,45 @@ function solveSudokuHelper(board) {
                   if (isValidMove(board, row, col, num)) {
                       board[row][col] = num;
 
-                      // Recursively attempt to solve the Sudoku
+                      // Tentantiva para executar o sudoku
                       if (solveSudokuHelper(board)) {
-                          return true; // Puzzle solved
+                          return true; // Puzzle resolvido
                       }
 
-                      board[row][col] = 0; // Backtrack
+                      board[row][col] = 0; //Retrocede
                   }
               }
-              return false; // No valid number found
+              return false; // Não achou um número válido
           }
       }
   }
 
-  return true; // All cells filled
+  return true; // Todas as células foram prenchidas
 }
 
 function isValidMove(board, row, col, num) {
   const gridSize = 9;
 
-  // Check row and column for conflicts
+  // Checa as linhas e colunas por conflitos 
   for (let i = 0; i < gridSize; i++) {
       if (board[row][i] === num || board[i][col] === num) {
-          return false; // Conflict found
+          return false; // Conflito encontrado
       }
   }
 
-  // Check the 3*3 subgrid for conflicts
+  // Checa a subgrid 3x3 para ver se tem conflitos
   const startRow = Math.floor(row / 3) * 3;
   const startCol = Math.floor(col / 3) * 3;
 
   for (let i = startRow; i < startRow + 3; i++) {
       for (let j = startCol; j < startCol + 3; j++) {
           if (board[i][j] === num) {
-              return false; // Conflict found
+              return false; // Achou conflitos
           }
       }
   }
 
-  return true; // No conflicts found
+  return true; // Não achou conflitos
 }
 
 function sleep(ms) {
